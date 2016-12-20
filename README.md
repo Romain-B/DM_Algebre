@@ -19,4 +19,4 @@ $ sudo jupyter notebook
 Once you've done so, a server log should start rolling out to which you don't really need top pay attention to, other than the exit instructions which are basically `Ctrl+C` and `y` to confirm.
 
 Your browser should open up with a navigation window to browse through your files, just go to the notebook and launch it.
-If your browser doesn't launch the jupyter interface, got to this adress : (http://localhost:8888/). 
+If your browser doesn't launch the jupyter interface, got to this adress : [http://localhost:8888/](http://localhost:8888/). 
