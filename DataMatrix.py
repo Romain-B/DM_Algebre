@@ -38,13 +38,15 @@ class DataMatrix:
           self.L[i,j] = self.k(i,j)
           self.L[j,i] = self.L[i,j]
 
-      
+
+    print self.L
+
+
 
   def k(self, i ,j):
     """Returns the gaussian similarity kernel between the elements at positions i and j"""
     x = self.data[i,1:]
     y = self.data[j,1:]
-    print ((np.linalg.norm(x-y))**2)/self.eps
     return exp(((np.linalg.norm(x-y))**2)/self.eps)
 
 
