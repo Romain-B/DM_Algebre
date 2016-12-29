@@ -38,8 +38,27 @@ class DataMatrix:
           self.L[i,j] = self.k(i,j)
           self.L[j,i] = self.L[i,j]
 
+    #Initialisation and making of D matrix
+    self.D = np.array([[0.0  for _ in range(self.nb_el)] for _ in range(self.nb_el)])
 
-    print self.L
+    for i in range(self.nb_el):
+      self.D[i,i] = self.L[i].sum()
+
+    D_half = np.matrix(np.zeros(self.D.shape))
+    D_mhalf = np.matrix(np.zeros(self.D.shape))
+
+    np.fill_diagonal(D_half, 1/ (self.D.diagonal()**0.5)) 
+    np.fill_diagonal(D_mhalf, 1/ (self.D.diagonal()**-0.5))
+
+    #Iitialisation and making of M matrix with M = D^-1/2 L D^1/2
+    self.M = np.dot(D_mhalf,self.L).dot(D_half)
+
+      #Initialisation with M = D^-1 L
+      #self.M = np.linalg.inv(self.D).dot(self.L)
+    
+
+
+    print self.M
 
 
 
