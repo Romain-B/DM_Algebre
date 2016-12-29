@@ -55,7 +55,7 @@ class DataMatrix:
 
       #Initialisation with M = D^-1 L
       #self.M = np.linalg.inv(self.D).dot(self.L)
-    
+
 
 
     print self.M
@@ -66,7 +66,7 @@ class DataMatrix:
     """Returns the gaussian similarity kernel between the elements at positions i and j"""
     x = self.data[i,1:]
     y = self.data[j,1:]
-    return exp(((np.linalg.norm(x-y))**2)/self.eps)
+    return exp(-((np.linalg.norm(x-y))**2)/self.eps)
 
 
 if __name__ == '__main__':
