@@ -16,8 +16,8 @@ def load_bar(now, total):
     out += "#"
   for _ in range(100-prog):
     out+= ' '
-  out += "] "+str(prog)+"%"
-  return("\r"+out)
+  out += "] "+str(prog)+"%" 
+  return "\r"+out
 
 
 
@@ -70,9 +70,9 @@ class DataMatrix:
       sys.stdout.write(load_bar(i+1,self.nb_el))
     print "\nDone.\n"
 
-    #Iitialisation and making of M matrix with M = D^-1/2 L D^1/2
+    #Iitialisation and making of Ms matrix with Ms = D^-1/2 L D^-1/2
 
-    print "Loading M matrix...\n"
+    print "Loading Ms matrix...\n"
 
     D_half = np.matrix(np.zeros(self.D.shape))
     D_mhalf = np.matrix(np.zeros(self.D.shape))
@@ -81,15 +81,36 @@ class DataMatrix:
     np.fill_diagonal(D_mhalf, 1/ (self.D.diagonal()**-0.5))
 
 
-    self.M = np.dot(D_mhalf,self.L).dot(D_half)
+    self.Ms = np.dot(D_mhalf,self.L).dot(D_mhalf)
 
       #Initialisation with M = D^-1 L
       #self.M = np.linalg.inv(self.D).dot(self.L)
+    print "\nDone.\n"
 
-    print "\nDone.\n M : \n"
+
+    print "Computing Eigenvalues of Ms...\n"
+
+    v,w = np.linalg.eig(self.Ms)
+    le = len(v)
+    v = np.sort(v)[::-1]
+
+    #Initialisation de V et Lambda, Lambda contenant les valeurs propres de M 
+    #et V les vecteurs propres.
 
 
-    print self.M
+    self.Lambda = np.array([[0.0 for _ in range(le)] for _ in range(le)])
+    for i in range(le):
+      self.Lambda[i,i]=v[i]
+      sys.stdout.write(load_bar(i+1,le))
+
+    self.V = w
+
+
+    print "\nDone.\n"
+
+
+    #Initialisation of M matrix :
+    self.M = np.dot(D_mhalf,self.V).dot(self.Lambda).dot(self.V.transpose()).dot(D_half)
 
 
 
@@ -102,6 +123,9 @@ class DataMatrix:
 
 if __name__ == '__main__':
   
-  #test = DataMatrix(2, "data_small.csv")
-  test = DataMatrix(2, "data.csv")
+  test = DataMatrix(0.5, "data_small.csv")
+  print "\nM :", test.M
+  # print "Valeurs propres de Ms :", test.Lambda
+  # print "Vecteurs propres de Ms :", test.V
+  #test = DataMatrix(2, "data.csv")
 
